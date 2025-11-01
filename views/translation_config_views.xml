@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dlnt_translation_config_list" model="ir.ui.view">
+        <field name="name">dlnt.translation.config.list</field>
+        <field name="model">dlnt.translation.config</field>
+        <field name="arch" type="xml">
+            <list string="Dynamic Translation Rules">
+                <field name="active"/>
+                <field name="display_name" string="Field"/>
+                <field name="model_id"/>
+                <field name="field_id"/>
+                <field name="original_translate"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_dlnt_translation_config_form" model="ir.ui.view">
+        <field name="name">dlnt.translation.config.form</field>
+        <field name="model">dlnt.translation.config</field>
+        <field name="arch" type="xml">
+            <form string="Dynamic Translation Rule">
+                <header>
+                    <button name="toggle_active" type="object" class="btn-link" string="Archive/Unarchive"/>
+                    <field name="active" widget="statusbar" options="{'clickable': True}"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="model_id" options="{'no_open': False}" attrs="{'readonly': [('id', '!=', False)]}"/>
+                        <field name="field_id" domain="[('model_id', '=', model_id)]" attrs="{'readonly': [('id', '!=', False)]}"/>
+                        <field name="original_translate" readonly="1"/>
+                        <field name="display_name" readonly="1"/>
+                    </group>
+                    <separator string="Usage"/>
+                    <p>
+                        Once a rule is active, the linked field will expose the inline translation toggle
+                        (e.g., EN / EL). After activation, open any record of the target model and use the
+                        translation icon near the field to provide multilingual values.
+                    </p>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_dlnt_translation_config" model="ir.actions.act_window">
+        <field name="name">Dynamic Field Translations</field>
+        <field name="res_model">dlnt.translation.config</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p>
+                Configure which Char, Text, HTML, or Selection fields should support inline translations.
+                Activate a rule to expose the language toggle immediately without modifying any source code.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_dlnt_translation_root" name="Dynamic Translations" parent="base.menu_custom" sequence="90"/>
+    <menuitem id="menu_dlnt_translation_config" name="Field Rules" parent="menu_dlnt_translation_root" action="action_dlnt_translation_config"/>
+</odoo>
